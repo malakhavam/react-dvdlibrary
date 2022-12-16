@@ -1,7 +1,6 @@
 import React, { Component} from 'react';
 import './App.css';
 import Main from "./components/Main.js";
-import Edit from "./components/Edit.js";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -17,7 +16,7 @@ class App extends Component {
   return (
     <div>
       <Main></Main>
-      <Edit></Edit>
+      
     </div>
   );
  }

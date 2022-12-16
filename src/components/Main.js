@@ -1,7 +1,51 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import $ from 'jquery';
 
 function Main() {
+   
+    // to load DVDs from the API
+    $(document).ready(function () {
+        loadDvds();
+    
+    });
+    function loadDvds() {
+        
+        var contentRows = $('#contentRows');
+    
+        $.ajax({
+            type: 'GET',
+            url: 'http://dvd-library.us-east-1.elasticbeanstalk.com/dvds/',
+            success: function (data, status) {
+                $.each(data, function (index, dvd) {
+                    var name = dvd.title;
+                    var date = dvd.releaseYear;
+                    var dir = dvd.director;
+                    var rate = dvd.rating;
+                    var dvdId = dvd.id;
+    
+                    var row = '<tr>';
+                    row += '<td><a onclick="showDvd(' + dvdId + ')">' + name + '</a></td>';
+                    row += '<td>' + date + '</td>';
+                    row += '<td>' + dir + '</td>';
+                    row += '<td>' + rate + '</td>';
+                    row += '<td><a onclick="editDvd(' + dvdId + ')">Edit</a> | <a onclick="deleteConfirmation(' + dvdId + ')">Delete</a></td>';
+                    row += '</tr>';
+    
+                    contentRows.append(row);
+                })
+            },
+            error: function () {
+                $('#errorMessages')
+                    .append($('<li>')
+                        .attr({
+                            class: 'list-group-item list-group-item-danger'
+                        })
+                        .text('Error calling web service. Please try again later.'));
+            }
+        });
+    }
+   // display DVD's table      
   return (
     <section className="my-5">
       <h1 id="main">DVD Library</h1>

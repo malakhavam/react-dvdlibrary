@@ -1,7 +1,35 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import $ from 'jquery';
 
-function Edit() {
+function Edit(id) {
+    function editDvd(dvdId) {
+
+    $.ajax({
+        type: 'GET',
+        url: 'https://tsg-dvds.herokuapp.com/dvd/' + dvdId,
+        success: function (data, status) {
+            $('#edit-dvd-title').val(data.title);
+            $('#edit-release-year').val(data.releaseYear);
+            $('#edit-director').val(data.director);
+            $('#edit-rating').val(data.rating);
+            $('#edit-notes').val(data.notes);
+            $('#edit-dvdId').val(data.dvdId);
+        },
+        error: function () {
+            $('#errorMessages')
+                .append($('<li>')
+                    .attr({
+                        class: 'list-group-item list-group-item-danger'
+                    })
+                    .text('Error calling web service. Please try again later.'));
+        }
+    })
+    $('#contactTableDiv').hide();
+    $('#homepage').hide();
+    $('#editDvdForm').show();
+
+}
     return (
         <div class="container" id="editDvdForm">
             <h1>Edit DVD</h1>
